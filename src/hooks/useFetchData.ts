@@ -4,6 +4,8 @@ import useSWR from 'swr';
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const useFetchData = () => {
+  console.log('Request attı!');
+
   // CoinGecko API'den veri çekme
   const { data, error } = useSWR('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&page=1&sparkline=true', fetcher, {
     refreshInterval: 45000, // Her 45 saniyede bir veriyi güncelle

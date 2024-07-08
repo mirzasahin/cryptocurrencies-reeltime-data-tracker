@@ -3,8 +3,21 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { formatNumber, formatNumberWithTwoDecimals, formatPercentage } from "../utils/formatters";
 
+type CryptoData = {
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h: number;
+  sparkline_in_7d: {
+    price: number[];
+  };
+};
+
 type DataTableProps = {
-  data: any[];
+  data: CryptoData[];
   loading: boolean;
 };
 
@@ -22,7 +35,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">Price</th>
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">Market Value</th>
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">24h Change</th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider"></th>
+            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">24h Sparkline</th>
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -63,10 +76,10 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
                 )}
               </td>
               <td className="px-6 w-[150px] py-4">
-                <Sparklines data={item.sparkline_in_7d.price}>
+                <Sparklines data={item.sparkline_in_7d.price.slice(-24)}>
                   <SparklinesLine
                     color={item.price_change_percentage_24h > 0 ? "green" : "red"}
-                    style={{ fill: "none", strokeWidth: 4 }}
+                    style={{ fill: "none", strokeWidth: 5 }}
                   />
                 </Sparklines>
               </td>
