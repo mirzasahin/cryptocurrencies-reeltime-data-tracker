@@ -22,7 +22,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">Price</th>
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">Market Value</th>
             <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">24h Change</th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">24h Sparkline</th>
+            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider"></th>
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -62,11 +62,11 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
                   </>
                 )}
               </td>
-              <td className="px-6 py-4">
+              <td className="px-6 w-[150px] py-4">
                 <Sparklines data={item.sparkline_in_7d.price}>
                   <SparklinesLine
                     color={item.price_change_percentage_24h > 0 ? "green" : "red"}
-                    style={{ fill: "none", strokeWidth: 2 }}
+                    style={{ fill: "none", strokeWidth: 4 }}
                   />
                 </Sparklines>
               </td>
