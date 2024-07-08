@@ -1,6 +1,29 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+### 1. Clone project repo to your local
+```bash
+git clone https://github.com/mirzasahin/cryptocurrencies-reeltime-data-tracker
+```
+
+### 2. Install all necessary dependencies
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+### 3. Run application
+```bash
+npm run dev
+```
+#### Open http://localhost:5173 with your browser to see the result.
+
+
+This template provides a minimal setup to get React working in Vite with HMR and 
+some ESLint rules.
 
 Currently, two official plugins are available:
 
