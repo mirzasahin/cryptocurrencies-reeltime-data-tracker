@@ -20,15 +20,31 @@ type CryptoData = {
   };
 };
 
+type BinanceData = {
+  s: string;
+  c: string;
+};
+
 type DataTableProps = {
   data: CryptoData[];
+  binanceData: BinanceData[];
   loading: boolean;
 };
 
-const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
+const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  const mergedData = data.map((item) => {
+    const binanceItem = binanceData.find((bItem) => bItem.s === item.symbol.toUpperCase() + 'USDT');
+    return {
+      ...item,
+      current_price: binanceItem ? parseFloat(binanceItem.c) : item.current_price,
+    };
+  });
+
+  const sortedData = mergedData.sort((a, b) => b.current_price - a.current_price);
 
   return (
     <div className="overflow-x-auto">
@@ -53,7 +69,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {data.map((item) => (
+          {sortedData.map((item) => (
             <tr key={item.symbol}>
               <td className="px-6 py-4 whitespace-nowrap text-md text-gray-900 flex items-center">
                 <img
@@ -69,20 +85,20 @@ const DataTable: React.FC<DataTableProps> = ({ data, loading }) => {
                   <div>{item.name}</div>
                 </div>
               </td>
-              <td className="px-6 text-right py-4 whitespace-nowrap text-sm text-gray-600">
+              <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
                 <span className="font-bold text-lg">
                   {formatNumberWithTwoDecimals(item.current_price)}
                 </span>{" "}
                 <span className="font-medium text-gray-400">USDT</span>
               </td>
-              <td className="px-6 text-right py-4 whitespace-nowrap text-sm text-gray-600">
+              <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
                 <span className="font-bold text-lg">
                   {formatNumber(item.market_cap)}
                 </span>{" "}
                 <span className="font-medium text-gray-400">USDT</span>
               </td>
               <td
-                className={`px-6 text-right py-4 font-bold whitespace-nowrap text-sm ${
+                className={`px-6 w-[200px] text-right py-4 font-bold whitespace-nowrap text-sm ${
                   item.price_change_percentage_24h > 0
                     ? "text-green-500"
                     : "text-red-500"
