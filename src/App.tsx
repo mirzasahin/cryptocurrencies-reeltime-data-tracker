@@ -3,9 +3,14 @@ import useFetchData from './hooks/useFetchData';
 import useWebSocket from './hooks/useWebSocket';
 import DataTable from './components/DataTable';
 
+type CryptoData = {
+  symbol: string;
+};
+
 const App: React.FC = () => {
+
   const { data: coingeckoData, loading: coingeckoLoading } = useFetchData();
-  const symbols = coingeckoData.map(item => item.symbol.toUpperCase() + 'USDT');
+  const symbols = coingeckoData.map((item: CryptoData) => item.symbol.toUpperCase() + 'USDT');
   const { data: binanceData, loading: binanceLoading } = useWebSocket(symbols);
 
   const loading = coingeckoLoading || binanceLoading;
