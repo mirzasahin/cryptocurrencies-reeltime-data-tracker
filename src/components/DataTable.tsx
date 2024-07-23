@@ -32,13 +32,15 @@ type DataTableProps = {
   loading: boolean;
 };
 
+const tradingPair = "USDT"
+
 const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => {
   if (loading) {
     return <div>Loading...</div>;
   }
 
   const mergedData = data.map((item) => {
-    const binanceItem = binanceData.find((bItem) => bItem.s === item.symbol.toUpperCase() + 'USDT');
+    const binanceItem = binanceData.find((bItem) => bItem.s === item.symbol.toUpperCase() + tradingPair);
     return {
       ...item,
       current_price: binanceItem ? parseFloat(binanceItem.c) : item.current_price,
@@ -72,20 +74,20 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
                 <div>
                   <div className="font-bold">
                     {item.symbol.toUpperCase()}{" "}
-                    <span className="font-medium text-gray-400">/ USDT</span>
+                    <span className="font-medium text-gray-400">/ {tradingPair}</span>
                   </div>
                   <div>{item.name}</div>
                 </div>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
                 <HighlightedPrice price={item.current_price} />{" "}
-                <span className="font-medium text-gray-400">USDT</span>
+                <span className="font-medium text-gray-400">{tradingPair}</span>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
                 <span className="font-bold text-lg">$
                   {formatNumber(item.market_cap)}
                 </span>{" "}
-                <span className="font-medium text-gray-400">USDT</span>
+                <span className="font-medium text-gray-400">{tradingPair}</span>
               </td>
               <td
                 className={`px-6 w-[200px] text-right py-4 font-bold whitespace-nowrap text-sm ${item.price_change_percentage_24h > 0

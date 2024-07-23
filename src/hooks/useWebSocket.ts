@@ -22,7 +22,6 @@ const useWebSocket = (symbols: string[]) => {
 
     const connectWebSocket = () => {
       socket.onopen = () => {
-        console.log('WebSocket connection established.');
         setLoading(false);
       };
 
@@ -41,9 +40,7 @@ const useWebSocket = (symbols: string[]) => {
       };
 
       socket.onclose = (event) => {
-        console.log('WebSocket connection closed.', event);
         if (!event.wasClean) {
-          console.log('WebSocket reconnecting...');
           setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
         }
       };
