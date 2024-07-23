@@ -3,9 +3,9 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import {
   formatNumber,
-  formatNumberWithTwoDecimals,
   formatPercentage,
 } from "../utils/formatters";
+import HighlightedPrice from "./HighlightedPrice";
 
 type CryptoData = {
   id: string;
@@ -53,21 +53,11 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
       <table className="min-w-full">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-400 tracking-wider">
-              Crypto
-            </th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">
-              Price
-            </th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">
-              Market Value
-            </th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">
-              24h Change
-            </th>
-            <th className="px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider">
-              24h Sparkline
-            </th>
+          <th className="table-header">Crypto</th>
+            <th className="price-header">Price</th>
+            <th className="market-value-header">Market Value</th>
+            <th className="change-header">24h Change</th>
+            <th className="sparkline-header">24h Sparkline</th>
           </tr>
         </thead>
         <tbody className="bg-white">
@@ -88,9 +78,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
                 </div>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
-                <span className="font-bold text-lg">$
-                  {formatNumberWithTwoDecimals(item.current_price)}
-                </span>{" "}
+                <HighlightedPrice price={item.current_price} />{" "}
                 <span className="font-medium text-gray-400">USDT</span>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
@@ -100,11 +88,10 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
                 <span className="font-medium text-gray-400">USDT</span>
               </td>
               <td
-                className={`px-6 w-[200px] text-right py-4 font-bold whitespace-nowrap text-sm ${
-                  item.price_change_percentage_24h > 0
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
+                className={`px-6 w-[200px] text-right py-4 font-bold whitespace-nowrap text-sm ${item.price_change_percentage_24h > 0
+                  ? "text-green-500"
+                  : "text-red-500"
+                  }`}
               >
                 {item.price_change_percentage_24h > 0 ? (
                   <>

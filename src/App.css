@@ -1,23 +1,49 @@
-/* App.css veya global CSS dosyanızda ekleyin */
-@keyframes flash {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+@keyframes flashGreen {
+  0%, 100% {
+    color: inherit;
   }
-  
-  .flash-red {
-    animation: flash 1s ease-in-out;
+  50% {
+    color: rgb(0, 190, 0)
+  }
+}
+
+@keyframes flashRed {
+  0%, 100% {
+    color: inherit;
+  }
+  50% {
     color: red;
   }
-  
-  .flash-green {
-    animation: flash 1s ease-in-out;
-    color: green;
-  }
-  
+}
+
+.flash-green {
+  animation: flashGreen 0.5s ease-in-out;
+}
+
+.flash-red {
+  animation: flashRed 0.5s ease-in-out;
+}
+
+.table-header {
+  @apply px-6 py-3 text-left text-xs font-bold text-gray-400 tracking-wider;
+}
+
+.test{
+  @apply bg-red-500;
+}
+
+.price-header {
+  @apply px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider;
+}
+
+.market-value-header {
+  @apply px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider;
+}
+
+.change-header {
+  @apply px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider;
+}
+
+.sparkline-header {
+  @apply px-6 text-right py-3 text-xs font-bold text-gray-400 tracking-wider;
+}
