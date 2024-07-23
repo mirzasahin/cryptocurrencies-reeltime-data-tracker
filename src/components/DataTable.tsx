@@ -23,6 +23,7 @@ type CryptoData = {
 type BinanceData = {
   s: string;
   c: string;
+  P: string;
 };
 
 type DataTableProps = {
@@ -41,6 +42,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
     return {
       ...item,
       current_price: binanceItem ? parseFloat(binanceItem.c) : item.current_price,
+      price_change_percentage_24h: binanceItem ? parseFloat(binanceItem.P) : item.price_change_percentage_24h,
     };
   });
 
@@ -86,13 +88,13 @@ const DataTable: React.FC<DataTableProps> = ({ data, binanceData, loading }) => 
                 </div>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
-                <span className="font-bold text-lg">
+                <span className="font-bold text-lg">$
                   {formatNumberWithTwoDecimals(item.current_price)}
                 </span>{" "}
                 <span className="font-medium text-gray-400">USDT</span>
               </td>
               <td className="px-6 w-[250px] text-right py-4 whitespace-nowrap text-sm text-gray-600">
-                <span className="font-bold text-lg">
+                <span className="font-bold text-lg">$
                   {formatNumber(item.market_cap)}
                 </span>{" "}
                 <span className="font-medium text-gray-400">USDT</span>

@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 type BinanceData = {
   s: string; // Symbol
   c: string; // Last price
-  q: string
+  q: string;
+  P: string;
 };
 
 const useWebSocket = (symbols: string[]) => {
   const [data, setData] = useState<BinanceData[]>([]);
   const [loading, setLoading] = useState(true);
+  const bufferRef = useRef<BinanceData[]>([]);
 
   useEffect(() => {
-    if (symbols.length === 0) {
+    if (symbols.length === 0) { 
       return;
     }
 
@@ -20,33 +22,29 @@ const useWebSocket = (symbols: string[]) => {
 
     const connectWebSocket = () => {
       socket.onopen = () => {
-        console.log('WebSocket bağlantısı kuruldu.');
+        console.log('WebSocket connection established.');
         setLoading(false);
       };
 
       socket.onmessage = (event) => {
         const message = JSON.parse(event.data);
-        setData((prevData) => {
-          const updatedData = [...prevData];
-          const index = updatedData.findIndex(item => item.s === message.s);
-          if (index !== -1) {
-            updatedData[index] = message;
-          } else {
-            updatedData.push(message);
-          }
-          return updatedData;
-        });
+        bufferRef.current = bufferRef.current.map((item) =>
+          item.s === message.s ? message : item 
+        );
+        if (!bufferRef.current.find((item) => item.s === message.s)) {
+          bufferRef.current.push(message);
+        }
       };
 
       socket.onerror = (error) => {
-        console.error('WebSocket hatası:', error);
+        console.error('WebSocket error:', error);
       };
 
       socket.onclose = (event) => {
-        console.log('WebSocket bağlantısı kapandı.', event);
+        console.log('WebSocket connection closed.', event);
         if (!event.wasClean) {
-          console.log('WebSocket yeniden bağlanıyor...');
-          setTimeout(connectWebSocket, 5000); // 5 saniye sonra tekrar bağlan
+          console.log('WebSocket reconnecting...');
+          setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
         }
       };
 
@@ -57,7 +55,20 @@ const useWebSocket = (symbols: string[]) => {
 
     connectWebSocket();
 
+    // Cleanup function to close WebSocket on component unmount
+    return () => {
+      socket.close();
+    };
   }, [symbols]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setData([...bufferRef.current]);
+      bufferRef.current = []; // Clear buffer after setting data
+    }, 3000); // Update data every 2 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, []);
 
   return { data, loading };
 };
